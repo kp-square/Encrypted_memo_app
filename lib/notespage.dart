@@ -1,19 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/Material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'addNote.dart';
 import 'models/notes.dart';
 import 'package:hive/hive.dart';
-import 'notepage.dart';
-import 'secureForm.dart';
-
 
 class NotesPageState extends State<NotesPage>{
   final int intMaxValue = 9223372036854775807;
-  //ToDO
-  //Read data from the hive box 'notes' and display as list
-  //Delete note from box 'notes'
-  //Modify note
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +23,7 @@ class NotesPageState extends State<NotesPage>{
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddNotes(myNote:Note('',''),index:this.intMaxValue)),
-          );
+          Navigator.pushNamed(context, '/addnote',arguments: {'mynote':Note('',''), 'index':this.intMaxValue});
         },
         backgroundColor: Colors.orange,
       ),
@@ -53,10 +42,13 @@ class NotesPageState extends State<NotesPage>{
               ListTile(
                 title:Text('Add Security'),
                 onTap:(){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context)=>SecureForm()),
-                  );
+                  Navigator.pushNamed(context, '/secureform',arguments: {});
+                },
+              ),
+              ListTile(
+                title:Text('Check Password'),
+                onTap:(){
+                  Navigator.pushNamed(context, '/enterpassword', arguments: {});
                 },
               ),
             ],
@@ -91,12 +83,7 @@ class NotesPageState extends State<NotesPage>{
               ],
             ),
             onTap: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NotePage(myNote: _note, index: index,),
-                ),
-              );
+              Navigator.pushNamed(context,'/notepage',arguments: {'mynote':_note,'index':index});
             },
           );
         },

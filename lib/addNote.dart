@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/notespage.dart';
 import 'models/notes.dart';
 import 'package:hive/hive.dart';
-import 'notespage.dart';
 
 class AddNotesState extends State<AddNotes>{
   final int intMaxValue = 9223372036854775807;
@@ -25,12 +23,12 @@ class AddNotesState extends State<AddNotes>{
     }else{
       noteBox.add(newNote);
     }
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushNamed(context, '/notespage', arguments: {});
   }
 
   _cancelNote(){
     //return to the previous route
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushNamed(context, '/notespage', arguments: {});
   }
 
   ///Implements a custom form to read the title and corresponding note

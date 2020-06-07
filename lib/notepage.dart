@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/Material.dart';
 import 'models/notes.dart';
-import 'addNote.dart';
-
 
 
 class NotePage extends StatelessWidget {
@@ -39,10 +37,7 @@ class NotePage extends StatelessWidget {
 
             ),
             onTap: (){
-              Navigator.push(
-              context,
-              MaterialPageRoute(builder:(context)=>AddNotes(myNote:this.myNote,index:this.index)),
-              );
+              Navigator.pushNamed(context,'/addnote',arguments: {'mynote':this.myNote,'index':this.index});
             },
         )
     );

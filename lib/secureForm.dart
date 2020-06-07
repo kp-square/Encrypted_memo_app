@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:pbkdf2_dart/pbkdf2_dart.dart';
 import 'package:crypto/crypto.dart';
+import 'package:hive/hive.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter/foundation.dart';
 
 class SecureFormState extends State<SecureForm>{
   String _password1;
@@ -36,11 +35,14 @@ class SecureFormState extends State<SecureForm>{
     ///a key on the database to observe if encryption in on or off
     ///Also implement the routegenerator.
 
-//    var storage = FlutterSecureStorage();
-//    await storage.write(key: 'hivepassword', value: String.fromCharCodes(securekey));
+    var storage = FlutterSecureStorage();
+    await storage.write(key: 'hivepassword', value: str);
+    var box = Hive.box('security');
+    box.put('encryption', true);
 //    print(securekey);
 //    var box = Hive.box('notes');
 //    Hive.deleteBoxFromDisk('notes');
+    Navigator.pop(context);
   }
 
   _confirmPassword(){
@@ -66,10 +68,12 @@ class SecureFormState extends State<SecureForm>{
           Text('Enter password'),
           TextFormField(
             onChanged: (value)=>_password1=value,
+            obscureText: true,
           ),
           Text('Confirm password'),
           TextFormField(
             onChanged: (value)=>_password2=value,
+            obscureText: true,
           ),
           FlatButton(
             onPressed: _confirmPassword,

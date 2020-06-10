@@ -45,12 +45,14 @@ class NotesPageState extends State<NotesPage>{
                   Navigator.pushNamed(context, '/secureform',arguments: {});
                 },
               ),
-              ListTile(
-                title:Text('Check Password'),
-                onTap:(){
-                  Navigator.pushNamed(context, '/enterpassword', arguments: {});
-                },
-              ),
+//              ListTile(
+//                title:((){
+//                  return Text('Check Password');
+//                })(),
+//                onTap:(){
+//                  Navigator.pushNamed(context, '/enterpassword', arguments: {});
+//                },
+//              ),
             ],
           ),
         ),

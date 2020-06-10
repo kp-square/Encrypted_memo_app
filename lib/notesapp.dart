@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'routeGenerator.dart';
+import 'utils.dart';
 
 
 class NotesAppState extends State<NotesApp> with WidgetsBindingObserver {
@@ -34,15 +36,29 @@ class NotesAppState extends State<NotesApp> with WidgetsBindingObserver {
     });
   }
 
-  String _encryptionKey = " ";
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title:'Notes App',
         home: FutureBuilder(
-          future: Hive.openBox('notes',compactionStrategy: (int total,int deleted){
+        //an immediate anonymous function to include the logic
+        future: (() async{
+          var box = Hive.box('security');
+          var encryption = box.get('encryption', defaultValue: false);
+          if(encryption){
+            var _storage = FlutterSecureStorage();
+            String value = await _storage.read(key: 'hivepassword');
+            var key = Utils.stringToKey(value);
+            return Hive.openBox('notes',encryptionKey: key, compactionStrategy: (int total,int deleted){
             return deleted > 40;
-          },
+            });
+          }
+          else{
+            return Hive.openBox('notes',compactionStrategy: (int total,int deleted){
+            return deleted > 40;
+            });
+          }
+        }()
           ),
           builder: (context,snapshot){
             if(snapshot.connectionState==ConnectionState.done){
@@ -66,8 +82,6 @@ class NotesAppState extends State<NotesApp> with WidgetsBindingObserver {
         )
     );
   }
-
-
 }
 
 
